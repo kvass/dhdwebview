@@ -1,0 +1,26 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/getOpenId/index",
+    "pages/getMiniProgramCode/index",
+    "pages/deployService/index",
+    "pages/createCollection/index",
+    "pages/uploadFile/index",
+    "pages/selectRecord/index",
+    "pages/updateRecord/index",
+    "pages/updateRecordResult/index",
+    "pages/updateRecordSuccess/index",
+    "pages/sumRecord/index",
+    "pages/sumRecordResult/index"
+  ],
+  "window": {
+    "backgroundColor": "#32D072",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#32D072",
+    "navigationBarTitleText": "钓红点",
+    "navigationBarTextStyle": "white",
+    "pageOrientation": "landscape"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

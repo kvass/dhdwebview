@@ -1,0 +1,21 @@
+<!--index.wxml-->
+<view class="container">
+    <loading tip="{{loadingText}}" wx:if="{{loading}}" />
+    <view wx:else>
+        <view wx:if="{{!hasUserInfo}}" class="noInfo">
+            <view class="title">无名无相</view>
+            <view class="subTitle">来去留个足迹，下办来会熟路。</view>
+            <view class="areyouready" bindtap="getUserProfile">用微信名就好</view>
+        </view>
+        <view wx:else>
+            <view class="userInfo" wx:if="{{!loading}}">
+                <image src="{{avatarUrl}}" class="avatar"></image>
+                <view class="nameAscore">
+                    <view class="title">{{nickName}}</view>
+                    <view class="subTitle">总分：{{score}}</view>
+                </view>
+            </view>
+            <view class="areyouready" bindtap="startDHD" wx:if="{{!loading}}">钓红点开始</view>
+        </view>
+    </view>
+</view>

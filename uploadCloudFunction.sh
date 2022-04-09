@@ -1,0 +1,1 @@
+"/Applications/wechatwebdevtools.app/Contents/MacOS/cli" cloud functions deploy --e dhd-3goxtqog1e8fbc8f --n functions --r  --project /Users/kvass/GitHub/DHDwebview

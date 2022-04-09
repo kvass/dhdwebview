@@ -1,0 +1,57 @@
+/**index.wxss**/
+
+page {
+  padding-top: 54rpx;
+  /* background-color: #f6f6f6; */
+  padding-bottom: 60rpx;
+}
+
+.noInfo {
+    margin-top: 20rpx;
+    height: 70vh;
+}
+.userInfo {
+    margin-top: 20rpx;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.userInfo .avatar {
+    margin-right: 20rpx;
+    width: 98rpx;
+    height: 98rpx;
+    border-radius: 50%;
+    border: 4rpx solid #fff;
+}
+
+.title {
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #fff;
+    font-size: 38rpx;
+    margin-bottom: 8rpx;
+}
+
+.subTitle {
+    font-size: 22rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 12rpx;
+}
+
+.areyouready {
+    display: inline-block;
+    margin-top: 40rpx;
+    margin-left: 130rpx;
+    padding: 12rpx 30rpx;
+    border-radius: 5px;
+    background-color: white;
+    text-align: center;
+    color: #FD675A;
+    font-size: 20rpx;
+}
+.noInfo .areyouready {
+    margin-left: 0;
+    color: #32D072;
+}
