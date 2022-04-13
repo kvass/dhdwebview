@@ -8,64 +8,107 @@ Page({
         nickName: '请授权头像和呢称',
         userInfo: {},
         logged: false,
-        desks: [],
-        Did: '',
-        DName: '',
-        DNum: '',
         score: '',
         startText: '用微信名就好',
-        hasUserInfo: false,
+        hasUserInfo: true,
         loading: true,
-        loadingText: '等下啊，罗准备…'
+        loadingText: '等下啊，罗准备…',
+        apiUrl: 'http://localhost:8091/api/'
     },
     onLoad: function() {
-        // wx.getSetting({
-        //     success(res) {
-        //         console.log(res.authSetting)
-        //             // res.authSetting = {
-        //             //   "scope.userInfo": true,
-        //             //   "scope.userLocation": true
-        //             // }
-        //     }
-        // })
-        // 获取用户信息
-        wx.getSetting({
-            success: res => {
-                console.log('到这里C')
+        let Token = wx.getStorageSync('token')
+        let that = this
+            // 查看有不有cookie，无即调用登录接口取得openid，有即
+        if (Token) {
+            wx.request({
+                url: that.data.apiUrl + 'checkSession',
+                method: "get",
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded',
+                    Authorization: 'Bearer ' + Token
+                },
+                success(res) {
+                    if (res.data) {
+                        if (res.data.state) {
+                            wx.redirectTo({
+                                url: '/pages/dhd/dhd'
+                            })
+                        } else {
+                            that.login()
+                        }
+                    } else {
+                        // token出错（过期等）报其他错误时
+                        that.login()
+                    }
+                }
+            })
+        } else {
+            that.login()
+        }
+    },
+    login() {
+        let that = this
+        wx.login({
+            success(res) {
+                if (res.code) {
+                    //发起网络请求
+                    wx.request({
+                        url: that.data.apiUrl + 'login',
+                        data: {
+                            code: res.code
+                        },
+                        success: res => {
+                            let hasUserInfo = false
+                            let Token = res.data.token
+                            wx.setStorageSync('token', Token)
+                            if (res.data.state) {
+                                // wx.setStorageSync('openId', res.data.openId)
+                                hasUserInfo = true
+                                wx.redirectTo({
+                                    url: '/pages/dhd/dhd'
+                                })
+                            } else {
+                                console.log('不存在用户信息，需要授权进行注册。');
+                                hasUserInfo = false
+                            }
+                            // 去掉 loading 效果，或跳转或让用户授权
+                            that.setData({
+                                loading: false,
+                                hasUserInfo
+                            })
+                        }
+                    })
+                } else {
+                    console.log('登录失败！' + res.errMsg)
+                }
             }
         })
-        this.hasUserInfo()
     },
     getUserProfile(e) {
-        this.setData({
-            loading: true,
-            loadingText: '等下啊……'
-        })
+        // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
+        // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
         wx.getUserProfile({
-            desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+            desc: '用于方便下办来用', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
             success: (res) => {
-                const { avatarUrl, nickName, gender, city } = res.userInfo;
-                // 把用户的信息，走reg函数存进库里
-                wx.cloud.callFunction({
-                    name: 'reg',
-                    data: {
-                        avatarUrl,
-                        nickName,
-                        gender,
-                        city
+                let profile = res
+                let Token = wx.getStorageSync('token')
+                wx.request({
+                    url: this.data.apiUrl + 'user',
+                    method: "post",
+                    data: profile,
+                    header: {
+                        Authorization: 'Bearer ' + Token
                     },
-                    success: res => {
-                        let { avatarUrl, nickName, score, openid } = res.result
-                        this.setData({
-                            hasUserInfo: true,
-                            avatarUrl,
-                            nickName,
-                            score,
-                            loading: false,
-                            loadingText: ''
+                    success: function(res) {
+                        wx.setStorageSync('token', res.data.token)
+                        wx.redirectTo({
+                            url: '/pages/dhd/dhd'
                         })
-                    },
-                    fail: err => { console.error('[云函数] [login] 调用失败', err) }
+                    }
+                })
+                this.setData({
+                    userInfo: res.userInfo,
+                    hasUserInfo: true
                 })
             }
         })
@@ -94,27 +137,6 @@ Page({
                 }
             }
         })
-    },
-    startDHD(e) {
-        // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
-        // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-        if (this.data.hasUserInfo) {
-            this.setData({
-                loading: true,
-                loadingText: '等一下啊，即将开始'
-            })
-            wx.cloud.callFunction({
-                name: 'startAlone',
-                success: res => {
-                    wx.setStorageSync('opponents', res.result.playerObj);
-                    wx.setStorageSync('OCards', res.result.originCards);
-                    wx.setStorageSync('panId', res.result.panId);
-                    wx.redirectTo({
-                        url: '/pages/pan/pan'
-                    })
-                }
-            })
-        }
     },
     onShareAppMessage: function() {
         return {

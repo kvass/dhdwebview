@@ -5,6 +5,9 @@
         <view></view>
         <view></view>
         <view></view>
+        <view></view>
+        <view></view>
+        <view></view>
     </view>
     <text>{{tip}}</text>
 </view>
