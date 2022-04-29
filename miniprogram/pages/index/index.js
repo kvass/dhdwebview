@@ -13,6 +13,7 @@ Page({
         hasUserInfo: true,
         loading: true,
         loadingText: '等下啊，罗准备…',
+        // apiUrl: 'https://api.wagoz.cn/api/'
         apiUrl: 'http://localhost:8091/api/'
     },
     onLoad: function() {
@@ -85,8 +86,9 @@ Page({
         })
     },
     getUserProfile(e) {
-        // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
-        // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
+        let that = this
+            // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认
+            // 开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
         wx.getUserProfile({
             desc: '用于方便下办来用', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
             success: (res) => {
@@ -100,10 +102,14 @@ Page({
                         Authorization: 'Bearer ' + Token
                     },
                     success: function(res) {
-                        wx.setStorageSync('token', res.data.token)
-                        wx.redirectTo({
-                            url: '/pages/dhd/dhd'
-                        })
+                        if (res.data.token) {
+                            wx.setStorageSync('token', res.data.token)
+                            wx.redirectTo({
+                                url: '/pages/dhd/dhd'
+                            })
+                        } else {
+                            that.login()
+                        }
                     }
                 })
                 this.setData({
@@ -140,9 +146,9 @@ Page({
     },
     onShareAppMessage: function() {
         return {
-            title: '来钓红点罗',
+            title: '大家人，来钓红点罗',
             path: '/pages/index/index',
-            imageUrl: "https://dhd.wagoz.cn/img/dhdshare.png" //自定义图片的地址
+            imageUrl: "https://dhd.wagoz.cn/img/dhdshare.jpg" //自定义图片的地址
         }
     }
 })

@@ -6,6 +6,7 @@ Page({
      */
     data: {
         url: 'http://localhost:8080/'
+            // url: 'https://dhd.wagoz.cn/'
     },
 
     /**
@@ -28,7 +29,7 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-
+        wx.hideHomeButton()
     },
 
     /**
@@ -62,7 +63,11 @@ Page({
     /**
      * 用户点击右上角分享
      */
-    onShareAppMessage() {
-
+    onShareAppMessage: function() {
+        return {
+            title: '大家人，来钓红点罗',
+            path: '/pages/index/index',
+            imageUrl: "https://dhd.wagoz.cn/img/dhdshare.jpg" //自定义图片的地址
+        }
     }
 })

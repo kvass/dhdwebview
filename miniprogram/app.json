@@ -1,27 +1,17 @@
 {
     "pages": [
-        "pages/dhd/dhd",
         "pages/index/index",
-        "pages/getOpenId/index",
-        "pages/getMiniProgramCode/index",
-        "pages/deployService/index",
-        "pages/createCollection/index",
-        "pages/uploadFile/index",
-        "pages/selectRecord/index",
-        "pages/updateRecord/index",
-        "pages/updateRecordResult/index",
-        "pages/updateRecordSuccess/index",
-        "pages/sumRecord/index",
-        "pages/sumRecordResult/index"
+        "pages/dhd/dhd"
     ],
     "window": {
-        "backgroundColor": "#007A7F",
+        "backgroundColor": "#601d35",
         "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#007A7F",
+        "navigationBarBackgroundColor": "#601d35",
         "navigationBarTitleText": "钓红点",
         "navigationBarTextStyle": "white",
         "pageOrientation": "landscape"
     },
     "sitemapLocation": "sitemap.json",
+    "lazyCodeLoading": "requiredComponents",
     "style": "v2"
 }
