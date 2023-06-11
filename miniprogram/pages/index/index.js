@@ -14,12 +14,15 @@ Page({
         loading: true,
         loadingText: '等下啊，罗准备…',
         // apiUrl: 'https://api.wagoz.cn/api/'
-        apiUrl: 'http://localhost:8091/api/'
+        apiUrl: 'http://localhost:8091/'
     },
     onLoad: function() {
         let Token = wx.getStorageSync('token')
         let that = this
-            // 查看有不有cookie，无即调用登录接口取得openid，有即
+        // 查看有没有 token：
+        // 无：调用登录接口取得openid，
+        // 有：把 token 传回服务端，由服务端验证 token 是否过期；
+
         if (Token) {
             wx.request({
                 url: that.data.apiUrl + 'checkSession',
